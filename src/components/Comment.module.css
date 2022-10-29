@@ -73,6 +73,7 @@
 
   display: flex;
   align-items: center;
+  
   border-radius: 2px;
 }
 
@@ -81,6 +82,10 @@
 }
 
 .commentBox footer button svg {
+  margin-right: .5rem;
+}
+
+.commentBox footer button span::before {
   content: "\2022";
   padding: 0 .25rem;
 }
