@@ -11,6 +11,7 @@ export function Post({ author, content, publishedAt }) {
   const [comments, setComments] = useState([
     'Post muito bacana, hein?!'
   ]);
+
   const [newCommentText, setNewCommnetText] = useState('');
 
   const publishedDateFormatted = format(
@@ -29,14 +30,23 @@ export function Post({ author, content, publishedAt }) {
     setNewCommnetText('');
   };
 
-  const deleteComment = (commentToDelete) => {
-    const commentsWithoutDeleteOne = comments.filter(comment => {
-      return comment !== commentToDelete
-    });
-    setComments(commentsWithoutDeleteOne);
-  };
+  const handleNewCommnetChange = (event) => {
+    event.target.setCustomValidity('');
+    setNewCommnetText(event.target.value);
+  }
 
-  
+  const handleNewCommentInvalid = (event) => {
+    event.target.setCustomValidity('Esse campo é obrigatório');
+  }  
+
+  const deleteComment = (commentToDelete) => {
+    const commentsWithoutDeleteOne = comments.filter((comment) => {
+      return comment !== commentToDelete
+    })
+    setComments(commentsWithoutDeleteOne)
+  }
+
+  const isNewCommentEmpty = newCommentText.length === 0;
 
   return (
     <article className={styles.post}>
@@ -76,15 +86,19 @@ export function Post({ author, content, publishedAt }) {
           name="comment"
           value={newCommentText}
           placeholder="Deixe um comentário"
-          onChange={(event) => setNewCommnetText(event.target.value)}
+          onChange={handleNewCommnetChange}
+          onInvalid={handleNewCommentInvalid}
+          required
         />
         <footer>
-          <button type="submit">Publicar</button>
+          <button type="submit" disabled={isNewCommentEmpty}>
+            Publicar
+          </button>
         </footer>
       </form>
 
       <div className={styles.commentList}>
-        {comments.map(comment => {
+        {comments.map((comment) => {
           return (
             <Comment
               key={comment}
